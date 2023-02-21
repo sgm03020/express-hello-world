@@ -1,7 +1,7 @@
 const { google } = require('googleapis');
 // const privatekey = require('../../.secret/personal-secret.json');
 // const privatekey = require('../../.secret/overroad-backend-secret.json');
-const privatekey = require('./overroad-backend-secret.json');
+const privatekey = require('../overroad-backend-secret.json');
 console.log('privatekey: ', privatekey);
 
 // GOOGLE_APPLICATION_CREDENTIALS
