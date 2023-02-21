@@ -17,12 +17,12 @@ console.log(
 
 let overroad_backend = fs.readFileSync('overroad-backend-secret.json')
 let overroad_backend_obj = JSON.parse(overroad_backend)
-console.log(overroad_backend_obj)
+console.log("overroad_backend_obj=", overroad_backend_obj)
 
-(async() => {
 
-  //dResultを使った処理
-})();
+//(async() => {
+//  //dResultを使った処理
+//})();
 
 
 app.get('/', (req, res) => res.type('html').send(html))
