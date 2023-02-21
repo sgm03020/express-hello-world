@@ -4,7 +4,14 @@ const { google } = require('googleapis')
 
 const port = process.env.PORT || 3001
 
-console.log('process.env=', process.env)
+//console.log('process.env=', process.env)
+
+console.log('process.env.VAR1=', process.env['VAR1'])
+console.log('process.env.VAR2=', process.env['VAR2'])
+console.log(
+  'process.env.GOOGLE_CREDENTIALS=',
+  process.env['GOOGLE_CREDENTIALS']
+)
 
 app.get('/', (req, res) => res.type('html').send(html))
 
