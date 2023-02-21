@@ -3,10 +3,11 @@ const app = express()
 const fs = require('fs')
 
 //const { google } = require('googleapis')
-const { getJwtClient } = require('./common/oauth-service-account')
+//const { getJwtClient } = require('./common/oauth-service-account')
 
 const port = process.env.PORT || 3001
 
+console.log('__dirname=', __dirname)
 
 //console.log('process.env=', process.env)
 
@@ -14,11 +15,9 @@ const port = process.env.PORT || 3001
 //let overroad_backend_obj = JSON.parse(overroad_backend)
 //console.log("overroad_backend_obj=", overroad_backend_obj)
 
-
 //(async() => {
 //  //dResultを使った処理
 //})();
-
 
 app.get('/', (req, res) => res.type('html').send(html))
 
