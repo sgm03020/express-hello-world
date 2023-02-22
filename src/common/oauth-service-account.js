@@ -8,7 +8,7 @@ console.log('OVERROAD_BACKEND_SECRET_PATH: ', OVERROAD_BACKEND_SECRET_PATH)
 let privatekey
 if (OVERROAD_BACKEND_SECRET_PATH)
   privatekey = require(OVERROAD_BACKEND_SECRET_PATH)
-console.log('privatekey: ', privatekey)
+console.log('privatekey[type]: ', privatekey['type'])
 
 // GOOGLE_APPLICATION_CREDENTIALS
 // 手順
