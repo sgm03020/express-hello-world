@@ -41,6 +41,8 @@ if (typeof process.env.RENDER === 'undefined') {
 const client_secret = require(ClientWebPath)
 const play_token = require(PlaygroundTokenPath)
 
+console.log('client_secret=', client_secret)
+
 // 現在は下記の直書きを使っている
 
 // Playgournd経由で画面から直接得たトークン

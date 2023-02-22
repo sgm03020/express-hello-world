@@ -3,6 +3,7 @@ const bodyParser = require('body-parser')
 const router = express.Router()
 const url = require('url')
 
+/*
 const { getJwtClient } = require('../common/oauth-service-account')
 const { getEvents, addEvents, getHolidays } = require('./g-calendar')
 
@@ -28,6 +29,7 @@ router.post('/addEvents', async (req, res) => {
   }
   return res.send({ result: 'failed', message: '' })
 })
+*/
 
 router.get('/', async (req, res) => {
   return res.status(400).send()
