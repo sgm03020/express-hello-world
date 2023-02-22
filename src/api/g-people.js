@@ -1,10 +1,10 @@
-const { google } = require('googleapis');
-const url = require('url');
+const { google } = require('googleapis')
+const url = require('url')
 const {
   loadClientSecrets,
   authorize,
   authorizeNoToken,
-} = require('../common/oauth-helper');
+} = require('../common/oauth-helper')
 
 // fsの場合のパス
 // flex.bluemix@gmai.com
@@ -16,8 +16,27 @@ const {
 // const TOKEN_PATH = './src/tokens/token-people-flex-service.json';
 
 // flex.0520.service@gmai.comのWebクライアントのplayground経由 => OK
-const SECRET_PATH = './.secret/client_web.json';
+//const SECRET_PATH = './.secret/client_web.json';
 // const TOKEN_PATH = './src/tokens/token-flex-service-playground.json';
+
+// Renderのために修正
+let ClientWebPath = '../../client_web.json'
+let PlaygroundTokenPath = '../../token-flex-service-playground.json'
+// Not Render (ローカル環境では、.secretフォルダに置く)
+if (typeof process.env.RENDER === 'undefined') {
+  ClientWebPath = '../../.secret/client_web.json'
+  PlaygroundTokenPath = '../../.secret/token-flex-service-playground.json'
+} else {
+  if (typeof process.env.ClientWebPath !== 'undefined') {
+    // Not env for path
+    ClientWebPath = process.env['ClientWebPath']
+  }
+  if (typeof process.env.TokenPath !== 'undefined') {
+    // Not env for path
+    PlaygroundTokenPath = process.env['PlaygroundTokenPath']
+  }
+}
+
 // 現在は下記の直書きを使っている
 
 // Playgournd経由で画面から直接得たトークン
@@ -32,13 +51,13 @@ const TOKEN = {
     'https://mail.google.com/ https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/contacts',
   refresh_token:
     '1//04V_-POMk1Jk4CgYIARAAGAQSNwF-L9IrK2vcJHhdvSUSaa45jWwx70K63Y_6g8KOsGXTbIUP4aDiNuAS_hUJFoqdQZs0i-JqcHU',
-};
+}
 
 // If modifying these scopes, delete token.json.
 const SCOPES = [
   'https://www.googleapis.com/auth/contacts',
   'https://www.googleapis.com/auth/userinfo.profile',
-];
+]
 
 // 指定したメールアドレスを持つpeople情報
 /**
@@ -52,25 +71,25 @@ async function getPeople(addr) {
   //   return;
   // }
   try {
-    const secrets = await loadClientSecrets(SECRET_PATH);
-    console.log('SECRET_PATH: ', SECRET_PATH);
-    console.log('secrets: ', secrets);
+    const secrets = await loadClientSecrets(ClientWebPath)
+    console.log('ClientWebPath: ', ClientWebPath)
+    console.log('secrets: ', secrets)
 
     // 1) OK authorize (トークンパス指定)
     // const oAuth2Client = await authorize(secrets, SCOPES, TOKEN_PATH);
 
     // 2) OK authorizeNoToken + setCredentials (トークンJSONデータを直接指定)
     // --- START 2) ---
-    const oAuth2Client = await authorizeNoToken(secrets, SCOPES);
-    oAuth2Client.setCredentials(TOKEN);
+    const oAuth2Client = await authorizeNoToken(secrets, SCOPES)
+    oAuth2Client.setCredentials(TOKEN)
     // --- END 2) ---
 
-    const service = google.people({ version: 'v1', auth: oAuth2Client });
+    const service = google.people({ version: 'v1', auth: oAuth2Client })
     // https://developers.google.com/people/api/rest/v1/people.connections/list
     // { data: people }の意味はdataをpeopleという別名にしてアクセスできる
     // ということを意味する
-    let found;
-    let pageToken;
+    let found
+    let pageToken
     do {
       // const { data: people } = await service.people.connections.list({
       const { data } = await service.people.connections.list({
@@ -78,7 +97,7 @@ async function getPeople(addr) {
         personFields: 'names,emailAddresses,phoneNumbers', // names,emailAddresses,phoneNumbers
         pageSize: 999,
         pageToken: pageToken,
-      });
+      })
       // console.log('data: ', data);
       // 方法 1)
       // found = data.connections.find((v) => {
@@ -89,24 +108,25 @@ async function getPeople(addr) {
       //   }
       // });
       // 方法 2)
-      found = data.connections.find((v) =>
-        v.emailAddresses && v.emailAddresses.some(el => el.value === addr)
-      );
+      found = data.connections.find(
+        (v) =>
+          v.emailAddresses && v.emailAddresses.some((el) => el.value === addr)
+      )
       // console.log('found0: ', found);
 
-      if (found) break;
-      pageToken = data.nextPageToken;
+      if (found) break
+      pageToken = data.nextPageToken
       // console.log('pageToken: ', pageToken);
-    } while (pageToken);
+    } while (pageToken)
 
     // console.log('found: ', found);
     // 一致するメールアドレスが見つかった
-    if (found) return found;
+    if (found) return found
     // console.log('not found ', addr);
-    return;
+    return
   } catch (err) {
-    console.log('err: ', err);
-    return;
+    console.log('err: ', err)
+    return
   }
 }
 
@@ -116,23 +136,23 @@ async function getPeople(addr) {
  * @param email
  */
 async function isPeople(email) {
-  const found = getPeople(email) || null;
-  if (found) return true;
-  return false;
+  const found = getPeople(email) || null
+  if (found) return true
+  return false
 }
 
 // 全連絡先を取得
 // apiとして使うのではないが、ここへ置いた
 async function getAllPeople() {
   // Authorize a client with credentials, then call the Google Calendar API.
-  const secrets = loadClientSecrets(SECRET_PATH);
+  const secrets = loadClientSecrets(ClientWebPath)
   // const oAuth2Client = await authorize(secrets, SCOPES, TOKEN_PATH);
   // 以下(TOKEN直書きを使う場合)
   // ここから
-  const oAuth2Client = await authorizeNoToken(secrets, SCOPES);
-  oAuth2Client.setCredentials(TOKEN);
+  const oAuth2Client = await authorizeNoToken(secrets, SCOPES)
+  oAuth2Client.setCredentials(TOKEN)
   // ここまで
-  const service = google.people({ version: 'v1', auth: oAuth2Client });
+  const service = google.people({ version: 'v1', auth: oAuth2Client })
   // https://developers.google.com/people/api/rest/v1/people.connections/list
   // { data: people }の意味はdataをpeopleという別名にしてアクセスできる
   // ということを意味する
@@ -140,7 +160,7 @@ async function getAllPeople() {
     resourceName: 'people/me', // 必須
     personFields: 'names,emailAddresses,phoneNumbers', // names,emailAddresses,phoneNumbers
     pageSize: 999,
-  });
+  })
   //
   // console.log('data.connections ', data.connections);
   // email確認
@@ -148,14 +168,14 @@ async function getAllPeople() {
   //   const { emailAddresses } = el;
   //   console.log('emailAddresses: ', emailAddresses);
   // });
-  return data.connections || [];
+  return data.connections || []
 }
 
 /**
  *
  */
 async function getAllEmail() {
-  const people = await getAllPeople();
+  const people = await getAllPeople()
   // []の状態
   if (people) {
     // [ {resourceName:'abc', emailAddresses: [ {metadata:{...}, value:'xyz@xyz.com'}, {} ]}, ...]
@@ -169,36 +189,36 @@ async function getAllEmail() {
         // 1) push
         // acc.push(elm['value']);
         // 2) concat
-        acc = acc.concat(elm['value']);
+        acc = acc.concat(elm['value'])
       }
-      return acc;
-    }, []);
+      return acc
+    }, [])
     // console.log("result:", result);
-    return result;
+    return result
   }
-  return [];
+  return []
 }
 
 /**
  *
  */
 async function writePeopleToBlob() {
-  const peopleContainer = await createPeopleContainer('people');
-  const blobName = 'people' + '.json';
-  const blockBlobClient = peopleContainer.getBlockBlobClient(blobName);
+  const peopleContainer = await createPeopleContainer('people')
+  const blobName = 'people' + '.json'
+  const blockBlobClient = peopleContainer.getBlockBlobClient(blobName)
   // 保存データ
-  const contentRaw = ['xyz@xyz.com', 'abc@abc.com', 'klm@klm.com'].sort();
-  const content = JSON.stringify(contentRaw);
+  const contentRaw = ['xyz@xyz.com', 'abc@abc.com', 'klm@klm.com'].sort()
+  const content = JSON.stringify(contentRaw)
   const uploadBlobResponse = await blockBlobClient.upload(
     content,
     content.length
-  );
-  context.log('uploadBlobResponse: ', uploadBlobResponse);
+  )
+  context.log('uploadBlobResponse: ', uploadBlobResponse)
 
   return (context.res = {
     status: 200,
     body: { result: 'OK', message: 'not found', info: storageUrl } || {},
-  });
+  })
 }
 
 // 複数の関数をエクスポートする場合
@@ -207,4 +227,4 @@ module.exports = {
   getPeople,
   getAllPeople,
   getAllEmail,
-};
+}
