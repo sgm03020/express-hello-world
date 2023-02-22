@@ -1,4 +1,12 @@
+// dotenv
+// https://maku77.github.io/nodejs/env/dotenv.html
 require('dotenv').config()
+if (typeof process.env.VAR1 == 'undefined') {
+  //console.error('Error: "KEY1" is not set.');
+  //console.error('Please consider adding a .env file with KEY1.');
+  //process.exit(1);
+}
+
 const express = require('express')
 const app = express()
 const fs = require('fs')

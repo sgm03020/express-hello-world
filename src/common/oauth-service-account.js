@@ -3,12 +3,16 @@ const { google } = require('googleapis')
 // const privatekey = require('../../.secret/overroad-backend-secret.json');
 // const privatekey = require('../../overroad-backend-secret.json');
 
-const OVERROAD_BACKEND_SECRET_PATH = process.env['OverroadBackendSecretPath']
-console.log('OVERROAD_BACKEND_SECRET_PATH: ', OVERROAD_BACKEND_SECRET_PATH)
 let privatekey
-if (OVERROAD_BACKEND_SECRET_PATH)
-  privatekey = require(OVERROAD_BACKEND_SECRET_PATH)
-console.log('privatekey[type]: ', privatekey['type'])
+if (typeof process.env.OverroadBackendSecretPath === 'undefined') {
+} else {
+  const OVERROAD_BACKEND_SECRET_PATH = process.env['OverroadBackendSecretPath']
+  console.log('OVERROAD_BACKEND_SECRET_PATH: ', OVERROAD_BACKEND_SECRET_PATH)
+  if (OVERROAD_BACKEND_SECRET_PATH) {
+    privatekey = require(OVERROAD_BACKEND_SECRET_PATH)
+    console.log('privatekey[type]: ', privatekey['type'])
+  }
+}
 
 // GOOGLE_APPLICATION_CREDENTIALS
 // 手順
