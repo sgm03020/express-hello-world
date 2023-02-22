@@ -1,10 +1,37 @@
-const express = require("express");
-const app = express();
-const port = process.env.PORT || 3001;
+require('dotenv').config()
+const express = require('express')
+const app = express()
+const path = require('path')
+const bodyParser = require('body-parser')
+const routes = require('./api')
 
-app.get("/", (req, res) => res.type('html').send(html));
+const port = process.env.PORT || 3001
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+// CORS
+const cors = (req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*')
+  res.header(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept'
+  )
+  next()
+}
+
+// ignore request for FavIcon. so there is no error in browser
+const ignoreFavicon = (req, res, next) => {
+  if (req.originalUrl.includes('favicon.ico')) {
+    res.status(204).end()
+  }
+  next()
+}
+
+app.use(cors)
+app.use(ignoreFavicon)
+app.use('/api', routes)
+app.get('/', (req, res) => res.type('html').send(html))
+
+
+app.listen(port, () => console.log(`Example app listening on port ${port}!`))
 
 const html = `
 <!DOCTYPE html>

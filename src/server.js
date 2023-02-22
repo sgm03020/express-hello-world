@@ -1,39 +1,39 @@
-require('dotenv').config();
-const express = require('express');
-const path = require('path');
-const bodyParser = require('body-parser');
-const routes = require('./api');
+require('dotenv').config()
+const express = require('express')
+const path = require('path')
+const bodyParser = require('body-parser')
+const routes = require('./api')
 
 // CORS
 const cors = (req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Origin', '*')
   res.header(
     'Access-Control-Allow-Headers',
     'Origin, X-Requested-With, Content-Type, Accept'
-  );
-  next();
-};
+  )
+  next()
+}
 
 // ignore request for FavIcon. so there is no error in browser
 const ignoreFavicon = (req, res, next) => {
   if (req.originalUrl.includes('favicon.ico')) {
-    res.status(204).end();
+    res.status(204).end()
   }
-  next();
-};
+  next()
+}
 
 // fn to create express server
 const create = async () => {
   // server
-  const app = express();
+  const app = express()
 
   // configure nonFeature
   // app.use(ignoreFavicon); //corsの先に呼ぶと、
   // エラー: Cannot set headers after they are sent to the client
 
   // CORSを許可する
-  app.use(cors);
-  app.use(ignoreFavicon);
+  app.use(cors)
+  app.use(ignoreFavicon)
 
   // stripeでrawBodyが必要になり、しかし、jsonとも共存しないと他のapiで
   // 動作しなくなる。
@@ -53,36 +53,33 @@ const create = async () => {
       // Let's compute it only when hitting the Stripe webhook endpoint.
       verify: function (req, res, buf) {
         if (req.originalUrl.startsWith('/api/webhook')) {
-          req.rawBody = buf.toString();
+          req.rawBody = buf.toString()
         }
       },
     })
-  );
+  )
 
   // routes
-  app.use('/api', routes);
+  app.use('/api', routes)
 
   // root route - serve static file
   app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../public/client.html'));
-  });
+    res.sendFile(path.join(__dirname, '../public/client.html'))
+  })
 
   // Error handler
   /* eslint-disable no-unused-vars */
   app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).send('Something broke!');
-  });
+    console.error(err.stack)
+    res.status(500).send('Something broke!')
+  })
 
-  return app;
-};
-
-
+  return app
+}
 
 module.exports = {
   create,
-};
-
+}
 
 /* Old Code
 
