@@ -24,7 +24,7 @@ router.post('/addEvents', async (req, res) => {
   if (rr) {
     // 予約成功時にSendGrid経由でお客にメールを配信する
     //if (test) sendMailBySendGrid(req, res);
-    //return res.send({ result: 'success' });
+    return res.send({ result: 'success' })
   }
   return res.send({ result: 'failed', message: '' })
 })

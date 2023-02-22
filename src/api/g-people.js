@@ -37,6 +37,10 @@ if (typeof process.env.RENDER === 'undefined') {
   }
 }
 
+// render用 追加
+const client_secret = require(ClientWebPath)
+const play_token = require(PlaygroundTokenPath)
+
 // 現在は下記の直書きを使っている
 
 // Playgournd経由で画面から直接得たトークン
@@ -71,17 +75,17 @@ async function getPeople(addr) {
   //   return;
   // }
   try {
-    const secrets = await loadClientSecrets(ClientWebPath)
-    console.log('ClientWebPath: ', ClientWebPath)
-    console.log('secrets: ', secrets)
+    //const secrets = await loadClientSecrets(ClientWebPath)
+    //console.log('ClientWebPath: ', ClientWebPath)
+    //console.log('secrets: ', secrets)
 
     // 1) OK authorize (トークンパス指定)
     // const oAuth2Client = await authorize(secrets, SCOPES, TOKEN_PATH);
 
     // 2) OK authorizeNoToken + setCredentials (トークンJSONデータを直接指定)
     // --- START 2) ---
-    const oAuth2Client = await authorizeNoToken(secrets, SCOPES)
-    oAuth2Client.setCredentials(TOKEN)
+    const oAuth2Client = await authorizeNoToken(client_secret, SCOPES)
+    oAuth2Client.setCredentials(play_token)
     // --- END 2) ---
 
     const service = google.people({ version: 'v1', auth: oAuth2Client })
@@ -98,7 +102,7 @@ async function getPeople(addr) {
         pageSize: 999,
         pageToken: pageToken,
       })
-      // console.log('data: ', data);
+      //console.log('data: ', data);
       // 方法 1)
       // found = data.connections.find((v) => {
       //   if (v.emailAddresses) {
