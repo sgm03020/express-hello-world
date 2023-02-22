@@ -2,15 +2,12 @@ const express = require('express')
 const app = express()
 const fs = require('fs')
 
-//const { google } = require('googleapis')
 const { getJwtClient } = require('./common/oauth-service-account')
 
 const port = process.env.PORT || 3001
 
-console.log('__dirname=', __dirname)
-
+//console.log('__dirname=', __dirname)
 //console.log('process.env=', process.env)
-
 //let overroad_backend = fs.readFileSync('overroad-backend-secret.json')
 //let overroad_backend_obj = JSON.parse(overroad_backend)
 //console.log("overroad_backend_obj=", overroad_backend_obj)

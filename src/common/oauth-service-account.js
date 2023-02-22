@@ -1,8 +1,14 @@
-const { google } = require('googleapis');
+const { google } = require('googleapis')
 // const privatekey = require('../../.secret/personal-secret.json');
 // const privatekey = require('../../.secret/overroad-backend-secret.json');
-const privatekey = require('../../overroad-backend-secret.json');
-console.log('privatekey: ', privatekey);
+// const privatekey = require('../../overroad-backend-secret.json');
+
+const OVERROAD_BACKEND_SECRET_PATH = process.env['OverroadBackendSecretPath']
+console.log('OVERROAD_BACKEND_SECRET_PATH: ', OVERROAD_BACKEND_SECRET_PATH)
+let privatekey
+if (OVERROAD_BACKEND_SECRET_PATH)
+  privatekey = require(OVERROAD_BACKEND_SECRET_PATH)
+console.log('privatekey: ', privatekey)
 
 // GOOGLE_APPLICATION_CREDENTIALS
 // 手順
@@ -10,7 +16,8 @@ console.log('privatekey: ', privatekey);
 //    GCPからダウンロードしたキーファイルの内容を貼り付ける
 // 2) .profileを作る
 //    echo ${SERVICE_ACCOUNT_CREDENTIALS} > /.secret/personal-secret.json
-if (process.env.GOOGLE_APPLICATION_CREDENTIALS) {}
+if (process.env.GOOGLE_APPLICATION_CREDENTIALS) {
+}
 
 const SCOPES = [
   'https://www.googleapis.com/auth/script.projects',
@@ -25,10 +32,10 @@ const SCOPES = [
   'https://www.googleapis.com/auth/spreadsheets',
   'https://www.google.com/m8/feeds',
   'https://www.googleapis.com/auth/calendar',
-  "https://www.googleapis.com/auth/calendar.readonly",
-  "https://www.googleapis.com/auth/calendar.events",
+  'https://www.googleapis.com/auth/calendar.readonly',
+  'https://www.googleapis.com/auth/calendar.events',
   'https://www.googleapis.com/auth/contacts.readonly',
-];
+]
 
 // https://developers.google.com/search/apis/indexing-api/v3/get-token?hl=ja
 // https://googleapis.dev/nodejs/googleapis/latest/tasks/
@@ -40,7 +47,7 @@ const SCOPES = [
 // });
 // let auth, authClient, jwtClient;
 
-(async function () {})();
+;(async function () {})()
 
 async function getJwtClient() {
   // JWT形式の認証クライアント生成
@@ -49,8 +56,8 @@ async function getJwtClient() {
     null,
     privatekey.private_key,
     SCOPES
-  );
-  await jwtClient.authorize();
+  )
+  await jwtClient.authorize()
   // 旧コード
   // jwtClient.authorize(async function (err, tokens) {
   //   if (err) {
@@ -63,7 +70,7 @@ async function getJwtClient() {
   //   }
   // });
   // console.log('jwtClient.getRequestHeaders(): ', await jwtClient.getRequestHeaders());
-  return jwtClient;
+  return jwtClient
 }
 
-module.exports = { getJwtClient };
+module.exports = { getJwtClient }
