@@ -29,13 +29,13 @@ const create = async () => {
   app.use(cors)
   app.use(ignoreFavicon)
 
+  // routes => '/'の上に持って行くとrenderでエラー
+  app.use('/api', api)
+
   //app.get('/', (req, res) => res.send('Hello World'))
   app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../public/client.html'))
   })
-
-  // routes
-  app.use('/api', api)
 
   return app
 }
