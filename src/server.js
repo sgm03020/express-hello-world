@@ -1,79 +1,11 @@
 require('dotenv').config()
 const express = require('express')
 const path = require('path')
-const bodyParser = require('body-parser')
-const routes = require('./api')
-
-// CORS
-const cors = (req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*')
-  res.header(
-    'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept'
-  )
-  next()
-}
-
-// ignore request for FavIcon. so there is no error in browser
-const ignoreFavicon = (req, res, next) => {
-  if (req.originalUrl.includes('favicon.ico')) {
-    res.status(204).end()
-  }
-  next()
-}
 
 // fn to create express server
 const create = async () => {
-  // server
   const app = express()
-
-  // configure nonFeature
-  // app.use(ignoreFavicon); //corsの先に呼ぶと、
-  // エラー: Cannot set headers after they are sent to the client
-
-  // CORSを許可する
-  app.use(cors)
-  app.use(ignoreFavicon)
-
-  // stripeでrawBodyが必要になり、しかし、jsonとも共存しないと他のapiで
-  // 動作しなくなる。
-  // app.use(bodyParser.json()); // -> 下の用にexpress.json内で
-  // rawBodyとして付加する
-
-  //
-  // StripeでrawBodyを使うためこの位置でrawBodyを生成する
-  // https://stackoverflow.com/questions/53899365/stripe-error-no-signatures-found-matching-the-expected-signature-for-payload
-  // app.use('/api/webhook', express.raw({ type: '*/*' }));
-  // const stripe = require('stripe')(
-  //   'rk_test_51IzyuJAdO427bkmcJr8JsajLUCsHpJkmcqYjMpBIBBbry2M9fpUT9nKRzQEGw32KbZFtTIBA4zj1IHV66VOD32UC0097QJrU6c'
-  // );
-  app.use(
-    express.json({
-      // We need the raw body to verify webhook signatures.
-      // Let's compute it only when hitting the Stripe webhook endpoint.
-      verify: function (req, res, buf) {
-        if (req.originalUrl.startsWith('/api/webhook')) {
-          req.rawBody = buf.toString()
-        }
-      },
-    })
-  )
-
-  // routes
-  app.use('/api', routes)
-
-  // root route - serve static file
-  app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../public/client.html'))
-  })
-
-  // Error handler
-  /* eslint-disable no-unused-vars */
-  app.use((err, req, res, next) => {
-    console.error(err.stack)
-    res.status(500).send('Something broke!')
-  })
-
+  app.get('/', (req, res) => res.send('Hello World'))
   return app
 }
 
