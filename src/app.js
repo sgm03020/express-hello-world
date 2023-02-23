@@ -94,6 +94,7 @@ const port = process.env.PORT || 3001
 server
   .create()
   .then((app) => {
+    // renderではhostnameありだとエラーとなる
     //app.listen(port, hostname, () => {
     //  console.log(`Server has started on port ${port}! and ${hostname}`)
     //})
