@@ -29,7 +29,7 @@ const create = async () => {
   app.use(cors)
   app.use(ignoreFavicon)
 
-  // routes => '/'の上に持って行くとrenderでエラー
+  // routes
   app.use('/api', api)
 
   //app.get('/', (req, res) => res.send('Hello World'))
