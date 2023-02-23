@@ -4,9 +4,7 @@ const bodyParser = require('body-parser')
 const url = require('url')
 
 const { getJwtClient } = require('../common/oauth-service-account')
-//const { getEvents, addEvents, getHolidays } = require('./g-calendar')
-const { getEvents, addEvents } = require('./g-calendar')
-
+const { getEvents, addEvents, getHolidays } = require('./g-calendar')
 
 router.get('/events', async (req, res) => {
   try {
