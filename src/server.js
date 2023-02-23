@@ -29,12 +29,19 @@ const create = async () => {
   app.use(cors)
   app.use(ignoreFavicon)
 
+  // json受信で以下が必要
+  app.use(express.json())
+
   // routes
   app.use('/api', api)
 
   //app.get('/', (req, res) => res.send('Hello World'))
   app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../public/client.html'))
+  })
+  app.use((err, req, res, next) => {
+    console.error(err.stack)
+    res.status(500).send('Something broke!')
   })
 
   return app
