@@ -5,6 +5,7 @@ const url = require('url')
 
 const { getJwtClient } = require('../common/oauth-service-account')
 //const { getEvents, addEvents, getHolidays } = require('./g-calendar')
+const { getEvents } = require('./g-calendar')
 
 /*
 router.get('/events', async (req, res) => {
