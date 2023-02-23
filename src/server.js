@@ -2,7 +2,7 @@ require('dotenv').config()
 const express = require('express')
 const path = require('path')
 const bodyParser = require('body-parser')
-const routes = require('./api')
+const api = require('./api')
 
 // CORS
 const cors = (req, res, next) => {
@@ -29,13 +29,14 @@ const create = async () => {
   app.use(cors)
   app.use(ignoreFavicon)
 
-  // routes
-  app.use('/api', routes)
-
   //app.get('/', (req, res) => res.send('Hello World'))
   app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../public/client.html'))
   })
+
+  // routes
+  app.use('/api', api)
+
   return app
 }
 
