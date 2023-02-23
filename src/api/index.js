@@ -32,7 +32,7 @@ router.post('/addEvents', async (req, res) => {
 */
 
 router.get('/', async (req, res) => {
-  return res.status(200).send('Hello')
+  return res.status(200).send('api')
 })
 
 module.exports = router
