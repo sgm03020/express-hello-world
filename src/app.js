@@ -94,8 +94,11 @@ const port = process.env.PORT || 3001;
 server
   .create()
   .then((app) => {
-    app.listen(port, hostname, () => {
-      console.log(`Server has started on port ${port}! and ${hostname}`);
+    //app.listen(port, hostname, () => {
+    //  console.log(`Server has started on port ${port}! and ${hostname}`);
+    //});
+    app.listen(port, () => {
+      console.log(`Server has started on port ${port}!`);
     });
   })
   .catch((err) => console.log(err));
