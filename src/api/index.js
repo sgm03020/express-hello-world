@@ -7,7 +7,7 @@ const { getJwtClient } = require('../common/oauth-service-account')
 //const { getEvents, addEvents, getHolidays } = require('./g-calendar')
 const { getEvents } = require('./g-calendar')
 
-/*
+
 router.get('/events', async (req, res) => {
   try {
     const result = await getEvents(req, res)
@@ -19,6 +19,7 @@ router.get('/events', async (req, res) => {
   //return res.status(400).send()
 })
 
+/*
 router.post('/addEvents', async (req, res) => {
   const { test } = req.body
   const rr = await addEvents(req.body)
