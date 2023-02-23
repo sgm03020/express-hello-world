@@ -2,6 +2,7 @@ require('dotenv').config()
 const express = require('express')
 const path = require('path')
 const bodyParser = require('body-parser')
+const routes = require('./api');
 
 // CORS
 const cors = (req, res, next) => {
@@ -27,6 +28,9 @@ const create = async () => {
   // CORSを許可する
   app.use(cors)
   app.use(ignoreFavicon)
+
+  // routes
+  app.use('/api', routes);
 
   //app.get('/', (req, res) => res.send('Hello World'))
   app.get('/', (req, res) => {
