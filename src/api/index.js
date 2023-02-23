@@ -4,8 +4,9 @@ const bodyParser = require('body-parser')
 const url = require('url')
 
 const { getJwtClient } = require('../common/oauth-service-account')
-const { getEvents, addEvents, getHolidays } = require('./g-calendar')
+//const { getEvents, addEvents, getHolidays } = require('./g-calendar')
 
+/*
 router.get('/events', async (req, res) => {
   try {
     const result = await getEvents(req, res)
@@ -28,6 +29,7 @@ router.post('/addEvents', async (req, res) => {
   }
   return res.send({ result: 'failed', message: '' })
 })
+*/
 
 router.get('/', async (req, res) => {
   return res.status(200).send('api')
